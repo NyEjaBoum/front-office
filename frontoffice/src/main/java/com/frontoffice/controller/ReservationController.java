@@ -3,7 +3,7 @@ package com.frontoffice.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.frontoffice.model.Reservation;
+import com.frontoffice.dto.ReservationDTO;
 import com.frontoffice.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +24,7 @@ public class ReservationController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
 
-        List<Reservation> reservations;
+        List<ReservationDTO> reservations;
         if (date != null) {
             reservations = reservationService.getReservationsByDate(date);
         } else {

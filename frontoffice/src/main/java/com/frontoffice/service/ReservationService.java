@@ -3,25 +3,29 @@ package com.frontoffice.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.frontoffice.model.Reservation;
-import com.frontoffice.repository.ReservationRepository;
+import com.frontoffice.dto.ReservationDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
 
-    private final ReservationRepository reservationRepository;
+    private final RestClient restClient;
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+    public List<ReservationDTO> getAllReservations() {
+        return restClient.get()
+                .uri("/api/reservations")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
     }
 
-    public List<Reservation> getReservationsByDate(LocalDate date) {
-        return reservationRepository.findByDateArriveeBetween(
-                date.atStartOfDay(),
-                date.plusDays(1).atStartOfDay()
-        );
+    public List<ReservationDTO> getReservationsByDate(LocalDate date) {
+        return getAllReservations().stream()
+                .filter(r -> r.getDateArrivee() != null
+                        && r.getDateArrivee().toLocalDate().equals(date))
+                .toList();
     }
 }
