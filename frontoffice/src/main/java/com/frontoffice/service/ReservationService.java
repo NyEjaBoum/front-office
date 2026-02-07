@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.frontoffice.dto.ReservationsResponse;
 import com.frontoffice.model.Reservation;
 import com.frontoffice.repository.ReservationRepository;
 
@@ -17,24 +18,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReservationService {
 
-    private final RestClient restClient;
+    private final ReservationRepository reservationRepository; 
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${external.api.reservations.url:http://localhost:8080/api/reservations}")
+    @Value("${external.api.reservations.url:http://localhost:8080/voiture/api/reservations}")
     private String externalReservationsUrl;
 
     public List<Reservation> getAllReservations() {
-        // Appel à l'API REST externe
-        ResponseEntity<Reservation[]> response = restTemplate.getForEntity(externalReservationsUrl, Reservation[].class);
-        Reservation[] reservations = response.getBody();
-        return reservations != null ? List.of(reservations) : List.of();
+        ResponseEntity<ReservationsResponse> response = restTemplate.getForEntity(
+            externalReservationsUrl, ReservationsResponse.class);
+        ReservationsResponse body = response.getBody();
+        return body != null ? body.getReservations() : List.of();
     }
 
-    public List<ReservationDTO> getReservationsByDate(LocalDate date) {
-        return getAllReservations().stream()
-                .filter(r -> r.getDateArrivee() != null
-                        && r.getDateArrivee().toLocalDate().equals(date))
-                .toList();
+    public List<Reservation> getReservationsByDate(LocalDate date) {
+        return reservationRepository.findByDateArriveeBetween(
+                date.atStartOfDay(),
+                date.plusDays(1).atStartOfDay()
+        );
     }
 }
