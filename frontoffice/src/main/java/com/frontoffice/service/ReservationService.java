@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.frontoffice.dto.ReservationsResponse;
 import com.frontoffice.model.Reservation;
 import com.frontoffice.repository.ReservationRepository;
+import com.frontoffice.dto.ReservationsResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,9 +33,6 @@ public class ReservationService {
     }
 
     public List<Reservation> getReservationsByDate(LocalDate date) {
-        return reservationRepository.findByDateArriveeBetween(
-                date.atStartOfDay(),
-                date.plusDays(1).atStartOfDay()
-        );
+        return reservationRepository.findByDateArriveeBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 }
