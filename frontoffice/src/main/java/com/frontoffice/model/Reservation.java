@@ -33,5 +33,5 @@ public class Reservation {
     private Hotel hotel;
 
     @Column(name = "datearrivee")
-    private LocalDateTime dateArrivee;
+    private String dateArrivee;
 }

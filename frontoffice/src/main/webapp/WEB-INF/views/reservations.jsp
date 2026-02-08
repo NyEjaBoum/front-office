@@ -43,7 +43,8 @@
                                 <td>${reservation.idClient}</td>
                                 <td>${reservation.hotel.nom}</td>
                                 <td>
-                                    <fmt:formatDate value="${reservation.dateArrivee}" pattern="dd/MM/yyyy HH:mm" />
+                                    <%-- <fmt:formatDate value="${reservation.dateArrivee}" pattern="dd/MM/yyyy HH:mm" /> --%>
+                                    ${reservation.dateArrivee}
                                 </td>
                             </tr>
                         </c:forEach>
