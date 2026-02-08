@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+frontoffice/src/main/java/com/frontoffice/FrontofficeApplication.java
