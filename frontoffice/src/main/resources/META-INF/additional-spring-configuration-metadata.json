@@ -1,5 +1,0 @@
-{"properties": [{
-  "name": "backoffice.api.url",
-  "type": "java.lang.String",
-  "description": "Url of the backoffice API"
-}]}
