@@ -28,6 +28,9 @@ public class Reservation {
     @Column(name = "idclient")
     private Integer idClient;
 
+    @Column(name = "nbPassager")
+    private Integer nbPassager;
+
     @ManyToOne
     @JoinColumn(name = "idhotel")
     private Hotel hotel;
