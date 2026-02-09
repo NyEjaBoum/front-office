@@ -32,6 +32,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Client</th>
+                            <th>Nombre de passagers</th>
                             <th>Hôtel</th>
                             <th>Date d'arrivée</th>
                         </tr>
@@ -41,6 +42,7 @@
                             <tr>
                                 <td>${reservation.id}</td>
                                 <td>${reservation.idClient}</td>
+                                <td>${reservation.nbPassager}</td>
                                 <td>${reservation.hotel.nom}</td>
                                 <td>
                                     <%-- <fmt:formatDate value="${reservation.dateArrivee}" pattern="dd/MM/yyyy HH:mm" /> --%>
