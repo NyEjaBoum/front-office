@@ -6,6 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,11 +23,23 @@ public class ReservationDAO {
     @Value("${backoffice.api.url:http://localhost:8080/voiture/api}/reservations")
     private String externalReservationsUrl;
 
+    @Value("${api.token:}")
+    private String apiToken;
+
     // Toutes les réservations via l'API REST
     public List<Reservation> getAllReservations() {
         System.out.println("[ReservationDAO] Appel de l'API : " + externalReservationsUrl);
-        ReservationsResponse response = restTemplate.getForObject(
-            externalReservationsUrl, ReservationsResponse.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        if (apiToken != null && !apiToken.isEmpty()) {
+            headers.set("X-API-TOKEN", apiToken);
+        }
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ReservationsResponse> responseEntity = restTemplate.exchange(
+            externalReservationsUrl, HttpMethod.GET, request, ReservationsResponse.class);
+
+        ReservationsResponse response = responseEntity.getBody();
 
         if (response == null) {
             System.out.println("[ReservationDAO] Réponse nulle de l'API !");
@@ -71,11 +87,11 @@ public class ReservationDAO {
         return filtered;
     }
 
-    // DTO interne
-public static class ReservationsResponse {
-    private List<Reservation> data; // <-- doit s'appeler "data" comme dans le JSON
+    // DTO interne — champ "data" correspond au JSON retourné par le Back Office
+    public static class ReservationsResponse {
+        private List<Reservation> data;
 
-    public List<Reservation> getData() { return data; }
-    public void setData(List<Reservation> data) { this.data = data; }
-}
+        public List<Reservation> getData() { return data; }
+        public void setData(List<Reservation> data) { this.data = data; }
+    }
 }
