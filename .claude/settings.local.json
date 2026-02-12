@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvnw.cmd clean compile:*)",
+      "Bash(cmd /c \"cd /d d:\\\\GitHub\\\\front-office\\\\frontoffice && mvnw.cmd clean compile\")",
+      "Bash(cmd /c \"cd /d d:\\\\GitHub\\\\front-office\\\\frontoffice && mvnw.cmd clean compile 2>&1\")",
+      "Bash(cmd.exe /c \"cd /d d:\\\\GitHub\\\\front-office\\\\frontoffice & mvnw.cmd clean compile\")",
+      "Bash(powershell -Command:*)",
+      "Bash(del \"d:\\\\GitHub\\\\front-office\\\\frontoffice\\\\src\\\\main\\\\java\\\\com\\\\frontoffice\\\\config\\\\WebConfig.java\")"
+    ]
+  }
+}
