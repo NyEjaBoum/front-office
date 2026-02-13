@@ -22,7 +22,13 @@
             </c:if>
         </form>
 
+        <c:if test="${not empty error}">
+            <p class="error-message" style="color: red; font-weight: bold;">Erreur : ${error}</p>
+        </c:if>
+
         <c:choose>
+            <c:when test="${not empty error}">
+            </c:when>
             <c:when test="${empty reservations}">
                 <p class="empty-message">Aucune réservation trouvée.</p>
             </c:when>
