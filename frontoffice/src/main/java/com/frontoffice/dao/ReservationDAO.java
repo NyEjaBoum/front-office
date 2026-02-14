@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.frontoffice.model.Reservation;
@@ -36,17 +37,23 @@ public class ReservationDAO {
         }
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
-        ResponseEntity<ReservationsResponse> responseEntity = restTemplate.exchange(
-            externalReservationsUrl, HttpMethod.GET, request, ReservationsResponse.class);
+        ResponseEntity<ReservationsResponse> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange(
+                externalReservationsUrl, HttpMethod.GET, request, ReservationsResponse.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("Back Office indisponible : " + e.getMessage());
+        }
 
         ReservationsResponse response = responseEntity.getBody();
 
         if (response == null) {
-            System.out.println("[ReservationDAO] Réponse nulle de l'API !");
-            return List.of();
+            throw new RuntimeException("Reponse vide du Back Office");
+        }
+        if (response.getError() != null && !response.getError().isEmpty()) {
+            throw new RuntimeException(response.getError());
         }
         if (response.getData() == null) {
-            System.out.println("[ReservationDAO] Champ 'data' nul dans la réponse !");
             return List.of();
         }
 
@@ -87,11 +94,15 @@ public class ReservationDAO {
         return filtered;
     }
 
-    // DTO interne — champ "data" correspond au JSON retourné par le Back Office
+    // DTO interne — mappe le JSON du Back Office (champ "data" ou "error")
     public static class ReservationsResponse {
         private List<Reservation> data;
+        private String error;
 
         public List<Reservation> getData() { return data; }
         public void setData(List<Reservation> data) { this.data = data; }
+
+        public String getError() { return error; }
+        public void setError(String error) { this.error = error; }
     }
 }

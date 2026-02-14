@@ -6,7 +6,7 @@ REM CONFIGURATION
 REM ==============================
 
 REM Chemin du projet Maven
-set "PROJECT_DIR=C:\Users\NyEja\Documents\itu\mrNaina\voiture\front-office\frontoffice"
+set "PROJECT_DIR=D:\GitHub\frontoffice"
 
 REM Nom de l'artifact Maven (doit correspondre à <artifactId>)
 set "ARTIFACT_ID=frontoffice"
@@ -20,7 +20,7 @@ REM ⚠️ On force ici le nom du WAR / dossier pour avoir URL /frontoffice/
 set "DEPLOY_NAME=%ARTIFACT_ID%"
 
 REM Chemin Tomcat 11
-set "TOMCAT_HOME=C:\Program Files\Apache Software Foundation\Tomcat 10.1"
+set "TOMCAT_HOME=C:\Program Files\Tomcat\apache-tomcat-11.0.13"
 set "TOMCAT_WEBAPPS=%TOMCAT_HOME%\webapps"
 
 REM ==============================

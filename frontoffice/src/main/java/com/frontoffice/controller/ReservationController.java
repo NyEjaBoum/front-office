@@ -30,12 +30,16 @@ public class ReservationController {
         LocalDate date,
         Model model
     ) {
-        List<Reservation> reservations =
-            (date == null)
-            ? reservationDAO.getAllReservations()
-            : reservationDAO.getReservationsByDate(date);
+        try {
+            List<Reservation> reservations =
+                (date == null)
+                ? reservationDAO.getAllReservations()
+                : reservationDAO.getReservationsByDate(date);
 
-        model.addAttribute("reservations", reservations);
+            model.addAttribute("reservations", reservations);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "reservations";
     }
 }
